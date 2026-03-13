@@ -107,7 +107,6 @@ def index():
 
 
 import graphviz
-
 def mcd_to_image(mcd: dict, relations: list = None, output_path: str = "MCD"):
     """
     Génère un MCD en image PNG à partir du dictionnaire mcd et relations

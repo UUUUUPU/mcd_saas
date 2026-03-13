@@ -1,66 +1,105 @@
 <!DOCTYPE html>
 <html lang="fr">
+
 <head>
-<meta charset="UTF-8">
-<title>Générateur MCD → MLD → SQL</title>
-<style>
-body { font-family: Arial, sans-serif; padding: 2rem; }
-input, select, button { margin: 0.5rem 0; padding: 0.5rem; width: 100%; max-width: 400px; }
-textarea { width: 100%; height: 200px; margin-top: 10px; }
-a { display: block; margin: 5px 0; }
-</style>
+  <meta charset="UTF-8">
+   <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.5/dist/full.css" rel="stylesheet">
+  <title>Générateur MCD → MLD → SQL</title>
+
+  <!-- TailwindCSS + DaisyUI CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      daisyui: {
+        themes: ["light", "dark", "cupcake"]
+      }
+    }
+  </script>
+
+  <!-- Optionnel : ton CSS perso -->
+  <link href="./static/css/output.css" rel="stylesheet">
 </head>
-<body>
-<h1>Générateur MCD → MLD → SQL</h1>
 
-<form id="uploadForm">
-    <label>Choisissez votre fichier MCD (YAML/JSON/TXT) :</label><br>
-    <input type="file" id="file" required><br>
+<body data-theme="cupcake" class="bg-base-200 min-h-screen p-8">
 
-    <label>SGBD :</label><br>
-    <select id="db">
-        <option value="mysql">MySQL</option>
-        <option value="postgres">PostgreSQL</option>
-        <option value="sqlite">SQLite</option>
-    </select><br>
+  <div class="max-w-6xl mx-auto">
 
-    <button type="submit">Générer MLD et SQL</button>
-</form>
+    <!-- TITRE -->
+    <h1 class="text-5xl font-extrabold mb-10 text-center text-primary">Générateur MCD → MLD → SQL</h1>
 
-<h2>Résultats</h2>
+    <!-- FORMULAIRE -->
+    <div class="card bg-base-100 shadow-lg rounded-xl mb-10">
+      <div class="card-body">
+        <form id="uploadForm" class="space-y-6">
+          <div>
+            <label class="font-semibold mb-2 block">Choisissez votre fichier MCD :</label>
+            <input type="file" id="file" class="file-input file-input-bordered file-input-primary w-full" required>
+          </div>
 
-<h3>MCD</h3>
-<textarea id="mcdOutput" readonly></textarea>
+          <div>
+            <label class="font-semibold mb-2 block">SGBD :</label>
+            <select id="db" class="select select-bordered select-primary w-full">
+              <option value="mysql">MySQL</option>
+              <option value="postgres">PostgreSQL</option>
+              <option value="sqlite">SQLite</option>
+            </select>
+          </div>
 
-<h3>MLD</h3>
-<textarea id="mldOutput" readonly></textarea>
+          <button class="btn btn-primary w-full text-lg font-semibold" type="submit">Générer MLD et SQL</button>
+        </form>
+      </div>
+    </div>
 
-<h3>SQL</h3>
-<textarea id="sqlOutput" readonly></textarea>
+    <!-- RESULTATS -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-10">
+      <div class="card bg-base-100 shadow-md rounded-lg p-4">
+        <h3 class="font-bold text-lg mb-3 text-primary">MCD</h3>
+        <textarea id="mcdOutput" class="textarea textarea-bordered w-full h-64" readonly></textarea>
+      </div>
+      <div class="card bg-base-100 shadow-md rounded-lg p-4">
+        <h3 class="font-bold text-lg mb-3 text-secondary">MLD</h3>
+        <textarea id="mldOutput" class="textarea textarea-bordered w-full h-64" readonly></textarea>
+      </div>
+      <div class="card bg-base-100 shadow-md rounded-lg p-4">
+        <h3 class="font-bold text-lg mb-3 text-accent">SQL</h3>
+        <textarea id="sqlOutput" class="textarea textarea-bordered w-full h-64" readonly></textarea>
+      </div>
+    </div>
 
-<h3>Téléchargements</h3>
-<a id="downloadMCD" href="#" download>MCD (PNG)</a>
-<a id="downloadMLD" href="#" download>MLD (TXT)</a>
-<a id="downloadSQL" href="#" download>SQL</a>
+    <!-- TELECHARGEMENTS -->
+    <div class="card bg-base-100 shadow-lg rounded-xl">
+      <div class="card-body">
+        <h3 class="card-title mb-4 text-lg font-bold text-primary">Téléchargements</h3>
+        <div class="flex flex-wrap gap-4">
+          <a id="downloadMCD" href="#" download class="btn btn-outline btn-primary flex-1">Télécharger MCD (PNG)</a>
+          <a id="downloadMLD" href="#" download class="btn btn-outline btn-secondary flex-1">Télécharger MLD (TXT)</a>
+          <a id="downloadSQL" href="#" download class="btn btn-outline btn-accent flex-1">Télécharger SQL</a>
+        </div>
+      </div>
+    </div>
 
-<script>
-const form = document.getElementById('uploadForm');
-form.addEventListener('submit', async e => {
-    e.preventDefault();
+  </div>
 
-    const fileInput = document.getElementById('file');
-    const dbSelect = document.getElementById('db');
+  <!-- SCRIPT JS -->
+  <script>
+    const form = document.getElementById('uploadForm');
 
-    if (!fileInput.files.length) {
+    form.addEventListener('submit', async e => {
+      e.preventDefault();
+
+      const fileInput = document.getElementById('file');
+      const dbSelect = document.getElementById('db');
+
+      if (!fileInput.files.length) {
         alert("Choisissez un fichier !");
         return;
-    }
+      }
 
-    const formData = new FormData();
-    formData.append('file', fileInput.files[0]);
-    formData.append('db', dbSelect.value);
+      const formData = new FormData();
+      formData.append('file', fileInput.files[0]);
+      formData.append('db', dbSelect.value);
 
-    try {
+      try {
         const res = await fetch('/generate', { method: 'POST', body: formData });
         if (!res.ok) throw new Error("Erreur serveur");
 
@@ -70,16 +109,16 @@ form.addEventListener('submit', async e => {
         document.getElementById('mldOutput').value = JSON.stringify(data.mld, null, 2);
         document.getElementById('sqlOutput').value = data.sql;
 
-        // Mise à jour des liens de téléchargement
         document.getElementById('downloadMCD').href = data.mcd_img;
         document.getElementById('downloadMLD').href = data.mld_file;
         document.getElementById('downloadSQL').href = data.sql_file;
 
-    } catch (err) {
+      } catch (err) {
         alert("Erreur: " + err.message);
         console.error(err);
-    }
-});
-</script>
+      }
+    });
+  </script>
+
 </body>
 </html>

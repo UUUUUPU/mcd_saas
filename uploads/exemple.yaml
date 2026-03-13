@@ -1,51 +1,32 @@
-TYPE_USERS:
-  - id_type_user
-  - libelle
+entities:
 
-UTILISATEURS:
-  - id_user
-  - nom
-  - prenom
-  - id_type_user
+  UTILISATEURS:
+    - id_user
+    - nom
+    - prenom
 
-PROJETS:
-  - id_projet
-  - nom
-  - date_debut
-  - date_fin
+  PROJETS:
+    - id_projet
+    - nom
 
-TACHES:
-  - id_tache
-  - description
-  - date_echeance
-  - id_projet
-  - id_user
+  TACHES:
+    - id_tache
+    - description
 
-DEPARTEMENTS:
-  - id_dept
-  - nom
+relations:
 
-EMPLOYES:
-  - id_emp
-  - nom
-  - prenom
-  - id_dept
+  AFFECTATION:
+    entities:
+      - UTILISATEURS
+      - PROJETS
+    cardinalities:
+      - "1,N"
+      - "1,N"
 
-CLIENTS:
-  - id_client
-  - nom
-  - email
-
-FACTURES:
-  - id_facture
-  - montant
-  - date
-  - id_client
-
-PROJET_CLIENT:
-  - id_projet
-  - id_client
-
-EMPLOYE_TACHE:
-  - id_emp
-  - id_tache
+  REALISER:
+    entities:
+      - PROJETS
+      - TACHES
+    cardinalities:
+      - "1,N"
+      - "0,N"

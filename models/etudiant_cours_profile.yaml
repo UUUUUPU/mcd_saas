@@ -1,0 +1,25 @@
+ETUDIANT:
+  - id_etudiant
+  - nom
+  - prenom
+
+COURS:
+  - id_cours
+  - titre
+
+PROFESSEUR:
+  - id_prof
+  - nom
+
+INSCRIPTION:
+  - id_etudiant
+  - id_cours
+
+PROFILE:
+  - id_etudiant
+  - adresse
+  - telephone
+
+ENSEIGNE:
+  - id_prof
+  - id_cours

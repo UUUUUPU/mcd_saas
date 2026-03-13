@@ -1,0 +1,54 @@
+{
+  "TYPE_USERS": [
+    "PK id_type_user",
+    "libelle"
+  ],
+  "UTILISATEURS": [
+    "PK id_user",
+    "nom",
+    "prenom",
+    "id_type_user"
+  ],
+  "PROJETS": [
+    "PK id_projet",
+    "nom",
+    "date_debut",
+    "date_fin"
+  ],
+  "TACHES": [
+    "PK id_tache",
+    "description",
+    "date_echeance",
+    "id_projet",
+    "id_user"
+  ],
+  "DEPARTEMENTS": [
+    "PK id_dept",
+    "nom"
+  ],
+  "EMPLOYES": [
+    "PK id_emp",
+    "nom",
+    "prenom",
+    "id_dept"
+  ],
+  "CLIENTS": [
+    "PK id_client",
+    "nom",
+    "email"
+  ],
+  "FACTURES": [
+    "PK id_facture",
+    "montant",
+    "date",
+    "id_client"
+  ],
+  "PROJET_CLIENT": [
+    "PK id_projet",
+    "id_client"
+  ],
+  "EMPLOYE_TACHE": [
+    "PK id_emp",
+    "id_tache"
+  ]
+}

@@ -1,0 +1,12 @@
+ETUDIANT:
+  - id_etudiant
+  - nom
+  - prenom
+
+COURS:
+  - id_cours
+  - titre
+
+INSCRIPTION:
+  - id_etudiant
+  - id_cours

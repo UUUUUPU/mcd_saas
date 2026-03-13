@@ -1,0 +1,17 @@
+digraph MLD {
+	rankdir=LR
+	ETUDIANT [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+        <TR><TD BGCOLOR="lightblue"><B>ETUDIANT</B></TD></TR>
+    <TR><TD ALIGN='LEFT'>PK id_etudiant</TD></TR><TR><TD ALIGN='LEFT'>nom</TD></TR><TR><TD ALIGN='LEFT'>prenom</TD></TR></TABLE>> shape=plaintext]
+	COURS [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+        <TR><TD BGCOLOR="lightblue"><B>COURS</B></TD></TR>
+    <TR><TD ALIGN='LEFT'>PK id_cours</TD></TR><TR><TD ALIGN='LEFT'>titre</TD></TR></TABLE>> shape=plaintext]
+	INSCRIPTION [label=<
+    <TABLE BORDER="1" CELLBORDER="1" CELLSPACING="0">
+        <TR><TD BGCOLOR="lightblue"><B>INSCRIPTION</B></TD></TR>
+    <TR><TD ALIGN='LEFT'>FK id_etudiant</TD></TR><TR><TD ALIGN='LEFT'>FK id_cours</TD></TR><TR><TD ALIGN='LEFT'>date_inscription</TD></TR></TABLE>> shape=plaintext]
+	ETUDIANT -> INSCRIPTION [label="1,N"]
+	COURS -> INSCRIPTION [label="1,N"]
+}

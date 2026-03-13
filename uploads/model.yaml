@@ -1,0 +1,23 @@
+tables:
+  ETUDIANT:
+    - PK id_etudiant
+    - nom
+    - prenom
+
+  COURS:
+    - PK id_cours
+    - titre
+
+  INSCRIPTION:
+    - FK id_etudiant
+    - FK id_cours
+    - date_inscription
+
+relations:
+  - from: ETUDIANT
+    to: INSCRIPTION
+    label: "1,N"
+
+  - from: COURS
+    to: INSCRIPTION
+    label: "1,N"

@@ -1,0 +1,19 @@
+{
+  "TYPE_USERS": [
+    "PK id_type_user",
+    "libelle"
+  ],
+  "UTILISATEURS": [
+    "PK id_user",
+    "matricule",
+    "noms",
+    "prenoms",
+    "sexe",
+    "telephone",
+    "adresse",
+    "est_actif",
+    "login",
+    "mot_de_passe",
+    "id_type_user"
+  ]
+}

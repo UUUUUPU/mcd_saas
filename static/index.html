@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Générateur MCD → MLD → SQL</title>
+<style>
+body { font-family: Arial, sans-serif; padding: 2rem; }
+input, select, button { margin: 0.5rem 0; padding: 0.5rem; width: 100%; max-width: 400px; }
+textarea { width: 100%; height: 200px; margin-top: 10px; }
+a { display: block; margin: 5px 0; }
+</style>
+</head>
+<body>
+<h1>Générateur MCD → MLD → SQL</h1>
+
+<form id="uploadForm">
+    <label>Choisissez votre fichier MCD (YAML/JSON/TXT) :</label><br>
+    <input type="file" id="file" required><br>
+
+    <label>SGBD :</label><br>
+    <select id="db">
+        <option value="mysql">MySQL</option>
+        <option value="postgres">PostgreSQL</option>
+        <option value="sqlite">SQLite</option>
+    </select><br>
+
+    <button type="submit">Générer MLD et SQL</button>
+</form>
+
+<h2>Résultats</h2>
+
+<h3>MCD</h3>
+<textarea id="mcdOutput" readonly></textarea>
+
+<h3>MLD</h3>
+<textarea id="mldOutput" readonly></textarea>
+
+<h3>SQL</h3>
+<textarea id="sqlOutput" readonly></textarea>
+
+<h3>Téléchargements</h3>
+<a id="downloadMCD" href="#" download>MCD (PNG)</a>
+<a id="downloadMLD" href="#" download>MLD (TXT)</a>
+<a id="downloadSQL" href="#" download>SQL</a>
+
+<script>
+const form = document.getElementById('uploadForm');
+form.addEventListener('submit', async e => {
+    e.preventDefault();
+
+    const fileInput = document.getElementById('file');
+    const dbSelect = document.getElementById('db');
+
+    if (!fileInput.files.length) {
+        alert("Choisissez un fichier !");
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('file', fileInput.files[0]);
+    formData.append('db', dbSelect.value);
+
+    try {
+        const res = await fetch('/generate', { method: 'POST', body: formData });
+        if (!res.ok) throw new Error("Erreur serveur");
+
+        const data = await res.json();
+
+        document.getElementById('mcdOutput').value = JSON.stringify(data.mcd, null, 2);
+        document.getElementById('mldOutput').value = JSON.stringify(data.mld, null, 2);
+        document.getElementById('sqlOutput').value = data.sql;
+
+        // Mise à jour des liens de téléchargement
+        document.getElementById('downloadMCD').href = data.mcd_img;
+        document.getElementById('downloadMLD').href = data.mld_file;
+        document.getElementById('downloadSQL').href = data.sql_file;
+
+    } catch (err) {
+        alert("Erreur: " + err.message);
+        console.error(err);
+    }
+});
+</script>
+</body>
+</html>
